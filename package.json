@@ -9,8 +9,10 @@
   "author": "Kanstansin Nekhniadovich",
   "license": "ISC",
   "devDependencies": {
+    "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.14.2",
     "express": "^4.13.4",
-    "mongodb": "^2.1.7"
+    "mongodb": "^2.1.7",
+    "mongoose": "^4.4.3"
   }
 }
