@@ -3,7 +3,9 @@ var express = require('express'),
 	path = require('path'),
     mongoose = require('mongoose'),
     UserController = require('./controllers/user');
-    router = express.Router();
+    router = express.Router(),
+	passport = require('passport'),
+	auth = require('./controllers/auth');
 
 var app = express();
 
@@ -13,22 +15,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static('views'));
 
-var userRoute = router.route('/users');
+app.use(passport.initialize());
 
-//userRoute.post(UserController.postUsers);
-//userRoute.get(UserController.getUsers);
-
-app.get('/users', UserController.getUsers);
-app.post('/users', UserController.postUsers);
-
-//app.get('/', function(req, res) {
-//	res.send('Hello world!');
-//});
-//
-//app.get('/index', function(req, res) {
-//	res.render('index');
-//});
+app.get('/users', auth.isAuthenticated, UserController.getUsers);
+app.post('/users', auth.isAuthenticated, UserController.postUsers);
 
 app.listen('5250', function() {
-	console.log('project qwe runs on port 5250');
+	console.log('project runs on port 5250');
 });
