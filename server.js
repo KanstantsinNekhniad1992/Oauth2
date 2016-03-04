@@ -2,10 +2,7 @@ var express = require('express'),
 	bodyParser = require('body-parser'),
 	path = require('path'),
     mongoose = require('mongoose'),
-    UserController = require('./controllers/user');
-    router = express.Router(),
-	passport = require('passport'),
-	auth = require('./controllers/auth');
+	passport = require('passport');
 
 var app = express();
 
@@ -17,8 +14,7 @@ app.use(express.static('views'));
 
 app.use(passport.initialize());
 
-app.get('/users', auth.isAuthenticated, UserController.getUsers);
-app.post('/users', auth.isAuthenticated, UserController.postUsers);
+require('./route')(app);
 
 app.listen('5250', function() {
 	console.log('project runs on port 5250');

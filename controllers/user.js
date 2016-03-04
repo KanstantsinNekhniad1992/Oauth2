@@ -24,3 +24,15 @@ exports.getUsers = function(req, res) {
         res.json(users);
     })
 }
+
+exports.getUser = function(req, res) {
+    User.findOne({id: req.params.id}, function(err, user) {
+
+        if(err) {
+            res.send(err);
+        }
+
+        res.json(user);
+
+    });
+}
