@@ -1,13 +1,15 @@
 var User = require('../models/user');
 
-exports.postUsers = function(req, res) {
+exports.postUsers = function (req, res) {
     var user = new User({
-       username: req.body.username,
-       password: req.body.password
+        username: req.body.username,
+        password: req.body.password,
+        firstName: req.body.firstName,
+        lastName: req.body.lastName
     });
 
-    user.save(function(err){
-        if(err) {
+    user.save(function (err) {
+        if (err) {
             res.send(err)
         }
 
@@ -15,9 +17,9 @@ exports.postUsers = function(req, res) {
     })
 }
 
-exports.getUsers = function(req, res) {
-    User.find(function(err, users) {
-        if(err) {
+exports.getUsers = function (req, res) {
+    User.find(function (err, users) {
+        if (err) {
             res.send(err);
         }
 
@@ -25,10 +27,10 @@ exports.getUsers = function(req, res) {
     })
 }
 
-exports.getUser = function(req, res) {
-    User.findOne({id: req.params.id}, function(err, user) {
+exports.getUser = function (req, res) {
+    User.findOne({id: req.params.id}, function (err, user) {
 
-        if(err) {
+        if (err) {
             res.send(err);
         }
 

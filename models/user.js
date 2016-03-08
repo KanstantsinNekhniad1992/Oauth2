@@ -8,9 +8,20 @@ var UserSchema = new mongoose.Schema({
 		unique: true,
 		require: true
 	},
+
 	password: {
 		type: String,
 		require: true
+	},
+
+	firstName: {
+		type: String,
+		require: false
+	},
+
+	lastName: {
+		type: String,
+		require: false
 	}
 
 });

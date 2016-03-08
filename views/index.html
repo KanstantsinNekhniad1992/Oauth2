@@ -18,7 +18,7 @@
                     <input type="text" name="password" placeholder="Password" id="password-field-log-in">
                 </div>
             </fieldset>
-            <input type="submit" value="Submit">
+            <a href="#" id="log-in-button" >Submit</a>
         </form>
         <form class="register">
             <fieldset>
@@ -40,8 +40,65 @@
                     <input type="text" name="password" placeholder="Password" id="password-field">
                 </div>
             </fieldset>
-            <input type="submit" value="Submit">
+            <a href="#" id="register-button">Submit</a>
         </form>
     </div>
 </body>
+    <script>
+
+        var logInButton = document.getElementById('log-in-button'),
+            registerButton = document.getElementById('register-button');
+
+        logInButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            var xhr = new XMLHttpRequest(),
+                username = document.getElementById('username-field-log-in').value,
+                password = document.getElementById('password-field-log-in').value,
+                data;
+
+            xhr.open('POST', '/users', true);
+            xhr.setRequestHeader("Content-type", "application/json");
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState != 4 || xhr.status != 200) return;
+                console.log(xhr.responseText);
+            };
+
+            data = {
+                username: username,
+                password: password
+            };
+
+            xhr.send(JSON.stringify(data));
+
+        });
+
+        registerButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            var xhr = new XMLHttpRequest(),
+                username = document.getElementById('username-field').value,
+                password = document.getElementById('password-field').value,
+                firstName = document.getElementById('first-name-field').value,
+                lastName = document.getElementById('last-name-field').value,
+                data;
+
+            xhr.open('POST', '/users', true);
+            xhr.setRequestHeader("Content-type", "application/json");
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState != 4 || xhr.status != 200) return;
+                console.log(xhr.responseText);
+            };
+
+            data = {
+                username: username,
+                password: password,
+                firstName: firstName,
+                lastName: lastName
+            };
+
+            xhr.send(JSON.stringify(data));
+        });
+
+    </script>
+
 </html>
