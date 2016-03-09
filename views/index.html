@@ -56,8 +56,8 @@
                 password = document.getElementById('password-field-log-in').value,
                 data;
 
-            xhr.open('POST', '/users', true);
-            xhr.setRequestHeader("Content-type", "application/json");
+            xhr.open('GET', '/users', true);
+            //xhr.setRequestHeader("Content-type", "application/json");
 
             xhr.onreadystatechange = function() {
                 if (xhr.readyState != 4 || xhr.status != 200) return;
