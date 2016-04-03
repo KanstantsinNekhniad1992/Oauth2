@@ -4,30 +4,20 @@ var express = require('express'),
     mongoose = require('mongoose'),
     session = require('express-session'),
     passport = require('passport'),
-    auth = require('./googleAuth'),
-    router = express.Router();
+    auth = require('./routes/auth'),
+    users = require('./routes/users'),
+    index = require('./routes/routes'),
+    db;
 
 var app = express();
-
+db = mongoose.connect('mongodb://localhost:27017/OauthDB');
 app.set('view engine', 'ejs');
 
-var googleStrategy = require('passport-google-oauth').OAuth2Strategy;
-
-passport.use(new googleStrategy({
-        clientID: '499286742753-aln8lr6eiba3iq3le1unc4au7mm37m20.apps.googleusercontent.com',
-        clientSecret: 'yREGrdZNvKSr4PcGXMsZ8Rf7',
-        callbackUrl: 'http://localhost:5250/auth/google/callback'
-    },
-    function (req, accessToken, refreshToken, profile, done) {
-        done(null, profile);
-    }
-));
-
-//mongoose.connect('mongodb://localhost:27017/UserDb');
-
-//app.use(bodyParser.json());
-//app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 //app.use(express.static('views'));
+
+
 
 app.use(session({
     secret: 'anything',
@@ -38,25 +28,43 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/', function (req, res) {
-    res.render('index', {title: 'Google Oauth2.0'});
+require('./config/passport')();
+
+app.use('/', index);
+app.use('/auth', auth);
+app.use('/users', users);
+
+app.use(function(req, res, next) {
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
 });
 
-app.use('/auth', function(req, res) {
-    console.log('HERE!!!!!!!!');
-    res.send({
-        user: 'Kostya'
+app.use('/errors', function(err, req, res) {
+    res.status(err.status || 500);
+    res.render('errors', {
+        message: err.message,
+        error: err
     });
 });
-passport.serializeUser(function (user, done) {
-    done(null, user);
-});
 
-passport.deserializeUser(function (user, done) {
-    done(null, user);
-});
+if(app.get('env') === 'development') {
+    app.use(function(err, req, res, next) {
+        res.status(err.status || 500);
+        res.render('errors', {
+            message: err.message,
+            error: err
+        });
+    });
+}
 
-//require('./route')(app);
+app.use(function(err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('errors', {
+        message: err.message,
+        error: {}
+    });
+});
 
 app.listen('5250', function () {
     console.log('project runs on port 5250');

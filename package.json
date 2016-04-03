@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "express-session": "^1.13.0",
+    "passport-facebook": "^2.1.0",
     "passport-google-oauth": "^1.0.0"
   }
 }

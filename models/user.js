@@ -3,67 +3,46 @@ var mongoose = require('mongoose'),
 
 var UserSchema = new mongoose.Schema({
 
-	username: {
-		type: String,
-		unique: true,
-		require: true
+	displayName: {
+		type: String
 	},
-
-	password: {
-		type: String,
-		require: true
+	email: {
+		type: String
 	},
-
-	firstName: {
-		type: String,
-		require: false
+	image: {
+		type: String
 	},
-
-	lastName: {
-		type: String,
-		require: false
+	google: {
+		type: Object
 	},
-
-	hashedPassword: {
-		type: String,
-		required: true
-	},
-
-	salt: {
-		type: String,
-		required: true
-	},
-
-	created: {
-		type: Date,
-		default: +(new Date())
+	facebook: {
+		type: Object
 	}
-
 });
-
-UserSchema.methods.encryptPassword = function(password) {
-	return crypto.createHmac('sha1', this.salt).update(password).digest('hex');
-};
-
-UserSchema.virtual('UserId')
-		.get(function() {
-			return this.id;
-		});
-
-UserSchema.virtual('Password')
-		.set(function(password) {
-			this._plainPassword = password;
-			this.salt = crypto.randomBytes(32).toString('base64');
-
-			return this.hashedPassword = this.encryptPassword(this._plainPassword);
-		})
-		.get(function() {
-			return this._plainPassword;
-		});
-
-UserSchema.methods.checkPassword = function(password) {
-	return this.hashedPassword == this.encryptPassword(password);
-};
+//
+// UserSchema.methods.encryptPassword = function(password) {
+// 	return crypto.createHmac('sha1', this.salt).update(password).digest('hex');
+// };
+//
+// UserSchema.virtual('UserId')
+// 		.get(function() {
+// 			return this.id;
+// 		});
+//
+// UserSchema.virtual('Password')
+// 		.set(function(password) {
+// 			this._plainPassword = password;
+// 			this.salt = crypto.randomBytes(32).toString('base64');
+//
+// 			return this.hashedPassword = this.encryptPassword(this._plainPassword);
+// 		})
+// 		.get(function() {
+// 			return this._plainPassword;
+// 		});
+//
+// UserSchema.methods.checkPassword = function(password) {
+// 	return this.hashedPassword == this.encryptPassword(password);
+// };
 
 module.exports = mongoose.model('User', UserSchema);
 
